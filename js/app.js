@@ -56,6 +56,8 @@ function consultarAPI(ciudad,pais)
 
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad},${pais}&appid=${idAPI}`;
 
+    spinner();
+
     fetch(url)
         .then(respuesta => respuesta.json())
         .then(resultado => {
@@ -67,7 +69,6 @@ function consultarAPI(ciudad,pais)
                 return;
             }
             mostrarClima(resultado);
-            console.log(resultado);
             })
 }
 
@@ -120,4 +121,21 @@ function limpiarHTML()
     {
         resultado.removeChild(resultado.firstChild);
     }
+}
+
+function spinner()
+{
+    limpiarHTML();
+
+    const cargando = document.createElement('div');
+    cargando.classList.add('spinner');
+    cargando.innerHTML = `
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+    `;
+
+    resultado.appendChild(cargando);
 }
