@@ -13,6 +13,8 @@ function buscarClima(e){
     const ciudad = document.querySelector('#ciudad').value;
     const pais = document.querySelector('#pais').value;
 
+    
+
     if(ciudad === '' || pais === '')
     {
         mostrarError('Todos los campos son Obligatorios');
@@ -57,12 +59,46 @@ function consultarAPI(ciudad,pais)
     fetch(url)
         .then(respuesta => respuesta.json())
         .then(resultado => {
+            limpiarHTML();
             if(resultado.cod === '404')
             {
                 mostrarError('No se encontro el Clima');
 
                 return;
             }
-            console.log(resultado);
+            mostrarClima(resultado);
             })
+}
+
+function mostrarClima(datos)
+{
+    const {main:{temp,temp_max,temp_min}} = datos;
+
+    const centigrados = kelvinACentigrados(temp);
+
+    const actual = document.createElement('p');
+    actual.classList.add('font-bold','text-6xl');
+    actual.innerHTML = `${centigrados} &#8451;`
+
+    const resultadoDIV = document.createElement('div');
+    resultadoDIV.classList.add('text-center','text-white');
+
+    resultadoDIV.appendChild(actual);
+    resultado.appendChild(resultadoDIV);
+
+
+}
+
+const kelvinACentigrados = (kelvin)=> parseInt(kelvin-273.15);
+/* function kelvinACentigrados(kelvin)
+{
+    return parseInt(kelvin-273.15);
+} */
+
+function limpiarHTML()
+{
+    while(resultado.firstChild)
+    {
+        resultado.removeChild(resultado.firstChild);
+    }
 }
